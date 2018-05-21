@@ -6,6 +6,8 @@ var app = express();
 // } )
 app.set('view engine', 'ejs');
 
+app.use(express.static(__dirname + '../client/dist'));
+
 app.get('/', (req, res) => res.render('../client/src/views/landing'))
 app.get('/companies', (req, res) => {
   var companies = [

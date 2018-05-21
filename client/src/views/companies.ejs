@@ -1,3 +1,5 @@
+<% include partials/header %>
+
 <h1>This is the Companies page!</h1>
 
 <% companies.forEach(function(company){ %>
@@ -6,3 +8,5 @@
     <img src='<%= company.image%>'></img>
   </div>
 <% }) %>
+
+<% include partials/footer %>
