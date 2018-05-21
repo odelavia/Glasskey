@@ -1,0 +1,15 @@
+<% include partials/header %>
+
+<div class="wrapper">
+    <header class="header">
+      <h1>Create a new company</h1>
+    </header>
+    <form action="/companies" method="POST">
+      <input type="text" name="name" placeholder="name">
+      <input type="text" name="image" placeholder="image url">
+      <button>Submit!</button>
+    </form>
+    <a href="/companies" class="btn">Go Back</a>
+</div>
+
+<% include partials/footer %>

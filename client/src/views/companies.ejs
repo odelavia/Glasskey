@@ -1,12 +1,18 @@
 <% include partials/header %>
 
-<h1>This is the Companies page!</h1>
+<div class="wrapper">
+  <header class="header">
+    <h1>This is the Companies Page</h1>
+  </header>
 
-<% companies.forEach(function(company){ %>
-  <div>
-    <h4><%= company.name %></h4>
-    <img src='<%= company.image%>'></img>
-  </div>
-<% }) %>
+  <a href="/companies/new" class="btn">Add new company</a>
+
+  <% companies.forEach(function(company){ %>
+    <div>
+      <h4><%= company.name %></h4>
+      <img src='<%= company.image%>'></img>
+    </div>
+  <% }) %>
+</div>
 
 <% include partials/footer %>
