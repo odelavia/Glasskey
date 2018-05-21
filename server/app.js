@@ -1,3 +1,4 @@
+const path = require('path');
 var express = require('express');
 var app = express();
 
@@ -20,4 +21,5 @@ app.get('/companies', (req, res) => {
   res.render('../client/src/views/companies', {companies:companies});
 });
 
+app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 app.listen(8000, () => console.log('glasskey server is listening on port 8000!'));
