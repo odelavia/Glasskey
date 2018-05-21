@@ -1,0 +1,8 @@
+<h1>This is the Companies page!</h1>
+
+<% companies.forEach(function(company){ %>
+  <div>
+    <h4><%= company.name %></h4>
+    <img src='<%= company.image%>'></img>
+  </div>
+<% }) %>

@@ -1,19 +1,21 @@
 {
   "name": "glasskey-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "Glassdoor but to review developers and other employees",
   "main": "input.js",
   "scripts": {
-    "dev-server": "webpack-dev-server --mode development",
+    "dev": "webpack-dev-server --mode development",
+    "serve": "node ./server/app.js",
     "build": "webpack --mode production"
   },
-  "author": "",
+  "author": "Oliver De La Via",
   "license": "ISC",
   "dependencies": {
     "babel-cli": "^6.26.0",
     "babel-loader": "^7.1.4",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "express": "^4.16.3",
     "live-server": "^1.2.0",
     "webpack": "^4.5.0",
     "webpack-cli": "^2.0.14",

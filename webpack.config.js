@@ -1,9 +1,9 @@
 const path = require('path')
 
 module.exports = {
-    entry: ['babel-polyfill', './src/index.js'],
+    entry: ['babel-polyfill', './client/src/index.js'],
     output: {
-        path: path.resolve(__dirname, 'public/scripts'),
+        path: path.resolve(__dirname, 'client/dist/scripts'),
         filename: 'bundle.js'
     },
     module: {
@@ -19,7 +19,7 @@ module.exports = {
         }]
     },
     devServer: {
-        contentBase: path.resolve(__dirname, 'public'),
+        contentBase: path.resolve(__dirname, 'client/dist'),
         publicPath: '/scripts/'
     },
     devtool: 'source-map'
