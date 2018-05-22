@@ -3,16 +3,19 @@
 <div class="wrapper">
   <header class="header">
     <h1>This is the Companies Page</h1>
+    <p>View our hand-picked employees from these companies</p>
+    <a href="/companies/new" class="btn">Add new company</a>
   </header>
+  <div class="content">
+    <% companies.forEach(function(company){ %>
+      <div class="thumbnail">
+        <h4><%= company.name %></h4>
+        <img src='<%= company.image%>'></img>
+        <p class="caption"><%= company.caption %></p>
+      </div>
+    <% }) %>
+  </div>
 
-  <a href="/companies/new" class="btn">Add new company</a>
-
-  <% companies.forEach(function(company){ %>
-    <div>
-      <h4><%= company.name %></h4>
-      <img src='<%= company.image%>'></img>
-    </div>
-  <% }) %>
 </div>
 
 <% include partials/footer %>

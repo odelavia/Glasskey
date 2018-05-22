@@ -15,6 +15,33 @@ body {
   flex-wrap: wrap;
 }
 
+nav {
+  display: grid;
+  grid-template-columns: 8fr 2fr;
+  grid-template-areas: "brand navlinks";
+  width: 100%;
+  margin: 0 30px;
+}
+
+.brand-container {
+  grid-area: brand;
+}
+
+.navlinks-container {
+  grid-area: navlinks;
+  display: flex;
+  justify-content: space-between;
+}
+
+li {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  color: #1B1B1B;
+}
+
 .wrapper {
   display: flex;
   min-height: calc(100vh - 80px);
@@ -30,20 +57,116 @@ body {
 }
 
 .header {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "welcome"
+    "tagline";
   width: 100%;
-  height: 60px;
+  min-height: 100px;
   justify-content: center;
   align-items: center;
   background-color: #141414;
   color: #fff;
+  padding: 10px;
+}
+
+.header h1 {
+  grid-area: welcome;
+  justify-self: center;
+}
+
+.header p {
+  grid-area: tagline;
+  justify-self: center;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-area: "name-input"
+  "image-input"
+  "btn"
+  "goback";
+  width: 30vw;
+  align-content: center;
+  justify-items: center;
+}
+
+.name-input {
+  grid-area: name-input;
+  display: flex;
+  margin: 10px 0;
+}
+
+.image-input {
+  grid-area: image-input;
+  display: flex;
+  margin: 10px 0;
+}
+
+.goback-link {
+  grid-area: goback;
+  display: flex;
+  margin: 10px 0;
+}
+
+button {
+  grid-area: btn;
+  display: flex;
+  margin: 10px auto;
+  justify-self: center;
 }
 
 .btn {
   display: flex;
+  justify-self: center;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  font-size: 12px;
+  border-radius: 4px;
+  background-color: #c1c1c1;
+  height: 20px;
+  width: 120px;
+  margin: 10px 0 0 0;
+  text-decoration: none;
+}
+
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 30px;
+  justify-content: space-around;
+}
+
+.thumbnail {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+  "thumb"
+  "caption";
+  border-radius: 5px;
+  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14),
+      0 6px 30px 5px rgba(0, 0, 0, 0.12),
+      0 8px 10px -5px rgba(0, 0, 0, 0.2);
+  margin: 30px 30px 0 30px;
+  padding: 0;
+  height: 180px;
+  width: 275px;
+  justify-items: center;
+}
+
+  .thumbnail h4 {
+    grid-area: caption;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+img {
+  grid-area: thumb;
+  max-width: 275px;
+  max-height: 145px;
 }
 
 footer{
