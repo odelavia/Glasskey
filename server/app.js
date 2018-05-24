@@ -39,7 +39,7 @@ app.get('/companies', (req, res) => {
     if(err){
       console.log('err')
     } else {
-      res.render('../client/src/views/index', {companies:allCompanies});
+      res.render('../client/src/views/companies/index', {companies:allCompanies});
     }
   });
 });
@@ -63,7 +63,7 @@ app.post('/companies', (req, res) => {
 });
 
 // new route. Displays form to make a new company
-app.get('/companies/new', (req, res) => res.render('../client/src/views/new.ejs'));
+app.get('/companies/new', (req, res) => res.render('../client/src/views/companies/new.ejs'));
 
 //show route. shows more info about one company
 app.get('/companies/:id', (req, res) => {
@@ -71,10 +71,43 @@ app.get('/companies/:id', (req, res) => {
     if(err) {
       console.log(err);
     } else {
-      res.render('../client/src/views/show', {company: foundCompany});
+      res.render('../client/src/views/companies/show', {company: foundCompany});
     }
   });
-})
+});
+
+// Comments route.
+app.get('/companies/:id/comments/new', (req, res) => {
+  Company.findById(req.params.id, (err, company) => {
+    if(err) {
+      console.log(err);
+    } else {
+      res.render('../client/src/views/comments/new', {company: company});
+    }
+  });
+});
+
+// create comment route. Add new comment to DB.
+app.post('/companies/:id/comments', (req, res) => {
+  // find company creat and save new comment to db
+  Company.findById(req.params.id, (err, company) => {
+    if(err) {
+      console.log('err');
+      res.redirect('/companies');
+    } else {
+      Comment.create(req.body.comment, (err, comment) => {
+        if(err) {
+          console.log('err');
+          // res.redirect('/companies');
+        } else {
+          company.comments.push(comment);
+          company.save()
+          res.redirect('/companies/' + company._id);
+        }
+      });
+    }
+  });
+});
 
 app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 app.listen(8000, () => console.log('glasskey server is listening on port 8000!'));

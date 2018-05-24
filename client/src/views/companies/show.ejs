@@ -1,11 +1,15 @@
-<% include partials/header %>
+<% include ../partials/header %>
 <h1><%= company.name%></h1>
 
 <img src="<%= company.image%>">
 
 <p><%= company.description %></p>
 
+<p>
+  <a class="btn" href="/companies/<%= company._id%>/comments/new">add new comment</a>
+</p>
+
 <% company.comments.forEach(function(comment){ %>
   <p><%= comment.author %> - <%= comment.text%> </p>
 <% }) %>
-<% include partials/footer %>
+<% include ../partials/footer %>
