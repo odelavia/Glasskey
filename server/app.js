@@ -3,6 +3,8 @@ const path       = require('path'),
       app        = express(),
       bodyParser = require('body-parser'),
       mongoose   = require('mongoose'),
+      passport   = require('passport'),
+      LocalStrategy   = require('passport-local'),
       Company    = require('../client/src/models/company'),
       seedDB     = require('../client/src/seeds')
       Comment    = require('../client/src/models/comment'),
@@ -63,7 +65,7 @@ app.post('/companies', (req, res) => {
 });
 
 // new route. Displays form to make a new company
-app.get('/companies/new', (req, res) => res.render('../client/src/views/companies/new.ejs'));
+app.get('/companies/new', (req, res) => res.render('../client/src/views/companies/new'));
 
 //show route. shows more info about one company
 app.get('/companies/:id', (req, res) => {
@@ -98,10 +100,9 @@ app.post('/companies/:id/comments', (req, res) => {
       Comment.create(req.body.comment, (err, comment) => {
         if(err) {
           console.log('err');
-          // res.redirect('/companies');
         } else {
           company.comments.push(comment);
-          company.save()
+          company.save();
           res.redirect('/companies/' + company._id);
         }
       });

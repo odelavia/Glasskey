@@ -163,10 +163,20 @@ button {
     width: 100%;
   }
 
-img {
+.thumb-img {
   grid-area: thumb;
   max-width: 275px;
   max-height: 145px;
+}
+
+/* // SHOW AREA /// */
+.company-container {
+  width: calc(100% - 60px);
+  margin: 0 30px;
+}
+.show-img {
+  width: 700px;
+  height: auto;
 }
 
 footer{

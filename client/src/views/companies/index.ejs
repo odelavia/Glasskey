@@ -10,7 +10,7 @@
     <% companies.forEach(function(company){ %>
       <div class="thumbnail">
         <h4><%= company.name %></h4>
-        <img src='<%= company.image%>'></img>
+        <img class="thumb-img" src='<%= company.image%>'></img>
         <p class="caption"><%= company.caption %></p>
         <p><a href="/companies/<%= company._id %>" class="btn">More Info</a></p>
       </div>

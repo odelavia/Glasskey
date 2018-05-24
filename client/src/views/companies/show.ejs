@@ -1,15 +1,25 @@
 <% include ../partials/header %>
-<h1><%= company.name%></h1>
 
-<img src="<%= company.image%>">
+<div class="company-container">
+  <h1><%= company.name%></h1>
+  <img class="show-img" src="<%= company.image%>">
+  <p><%= company.description %></p>
+</div>
 
-<p><%= company.description %></p>
-
-<p>
-  <a class="btn" href="/companies/<%= company._id%>/comments/new">add new comment</a>
-</p>
-
-<% company.comments.forEach(function(comment){ %>
-  <p><%= comment.author %> - <%= comment.text%> </p>
-<% }) %>
+<div class="review-container">
+  <p>
+    <a class="btn" href="/companies/<%= company._id%>/comments/new">add new comment</a>
+  </p>
+  <% company.comments.forEach(function(comment){ %>
+    <div>
+      <div>
+        <p>
+          <%= comment.author %>
+        </p>
+        <span>10 days ago</span>
+        <p> <%= comment.text%> </p>
+      </div>
+    </div>
+  <% }) %>
+</div>
 <% include ../partials/footer %>
