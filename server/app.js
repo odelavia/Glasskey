@@ -2,22 +2,20 @@ const path       = require('path'),
       express    = require('express'),
       app        = express(),
       bodyParser = require('body-parser'),
-      mongoose   = require('mongoose')
+      mongoose   = require('mongoose'),
+      Company    = require('../client/src/models/company'),
+      seedDB     = require('../client/src/seeds')
+      Comment    = require('../client/src/models/comment'),
+      User    = require('../client/src/models/user');
 
 mongoose.connect('mongodb://localhost/glass_key');
-app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
+app.use(bodyParser.urlencoded({extended: true}));
+seedDB();
 
 app.use(express.static(__dirname + '../client/dist'));
 
-var companySchema = new mongoose.Schema({
-  name: String,
-  image: String,
-  description: String
-});
-
-var Company = mongoose.model('Company', companySchema);
-
+//seed data, adds a new company everytime we run this server
 Company.create(
   {
     name: 'Glassdoor',
@@ -69,7 +67,7 @@ app.get('/companies/new', (req, res) => res.render('../client/src/views/new.ejs'
 
 //show route. shows more info about one company
 app.get('/companies/:id', (req, res) => {
-  Company.findById(req.params.id, (err, foundCompany) => {
+  Company.findById(req.params.id).populate("comments").exec((err, foundCompany) => {
     if(err) {
       console.log(err);
     } else {
