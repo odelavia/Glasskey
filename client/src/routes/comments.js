@@ -60,6 +60,17 @@ router.put("/:comment_id", (req, res) => {
   });
 })
 
+//DESTROY route
+router.delete("/:comment_id", (req, res) => {
+  Comment.findByIdAndRemove(req.params.comment_id, (err) => {
+    if (err) {
+      res.redirect("back");
+    } else {
+      res.redirect('/companies/' + req.params.id);
+    }
+  });
+});
+
 //middleware
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
