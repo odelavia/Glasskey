@@ -26,6 +26,9 @@ router.post('/', isLoggedIn, (req, res) => {
         if(err) {
           console.log('err');
         } else {
+          comment.author.id = req.user._id;
+          comment.author.username = req.user.username;
+          comment.save();
           company.comments.push(comment);
           company.save();
           res.redirect('/companies/' + company._id);

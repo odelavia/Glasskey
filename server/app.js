@@ -19,7 +19,8 @@ mongoose.connect('mongodb://localhost/glass_key');
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '../client/dist'));
-seedDB();
+// SEED THE DATABASE
+// seedDB();
 
 // Company.create(
 //   {
