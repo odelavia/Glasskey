@@ -6,9 +6,9 @@ const path       = require('path'),
       passport   = require('passport'),
       LocalStrategy   = require('passport-local'),
       Company    = require('../client/src/models/company'),
-      seedDB     = require('../client/src/seeds')
       Comment    = require('../client/src/models/comment'),
-      User    = require('../client/src/models/user');
+      User    = require('../client/src/models/user'),
+      seedDB     = require('../client/src/seeds');
 
 // requiring routes
 var commentRoutes = require("../client/src/routes/comments"),
@@ -44,22 +44,19 @@ app.use(require("express-session")({
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser);
-passport.deserializeUser(User.deserializeUser);
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // MIDDLEWARE SETUP
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
-})
+});
 
 //imports and prefixes routes
 app.use(indexRoutes);
 app.use("/companies", companyRoutes);
 app.use("/companies/:id/comments", commentRoutes);
-
-
-app.get('/', (req, res) => res.render('../client/src/views/landing'));
 
 app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 app.listen(8000, () => console.log('glasskey server is listening on port 8000!'));

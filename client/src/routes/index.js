@@ -1,12 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var passport   = require('passport');
-var User    = require('../models/user');
+var passport = require('passport');
+var User = require('../models/user');
 
-
-// ================//
-//   AUTH ROUTES   //
-// ================//
+//ROOT route
+router.get('/', (req, res) => res.render('../client/src/views/landing'));
 
 //SHOW register form
 router.get("/register", (req, res) => {
@@ -19,7 +17,7 @@ router.post("/register", (req, res) => {
   User.register(newUser, req.body.password, (err, user) => {
     if(err) {
       console.log(err);
-      return res.render("../client/src/views/register")
+      return res.render("../client/src/views/register");
     }
     passport.authenticate("local")(req, res, () => {
       res.redirect("/companies");
@@ -38,6 +36,7 @@ router.post("/login", passport.authenticate("local",
     successRedirect: "/companies",
     failureRedirect: "/login"
   }), (req, res) => {
+    console.log('this is where your code breaks');
 });
 
 //logout route
@@ -46,7 +45,7 @@ router.get("/logout", (req, res) => {
   res.redirect("/companies")
 });
 
-//middleware
+//MIDDLEWARE
 function isLoggedIn(req, res, next) {
   if(req.isAuthenticated()) {
     return next();
@@ -54,4 +53,4 @@ function isLoggedIn(req, res, next) {
   res.redirect("/login");
 }
 
-module.exports = router
+module.exports = router;

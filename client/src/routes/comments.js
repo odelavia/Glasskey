@@ -3,11 +3,7 @@ var router = express.Router({mergeParams: true});
 var Company = require('../models/company');
 var Comment = require('../models/comment');
 
-// ================//
-// COMMENTS ROUTES //
-// ================//
-
-// comments NEW route
+// COMMENTS NEW route
 router.get('/new', isLoggedIn, (req, res) => {
   Company.findById(req.params.id, (err, company) => {
     if(err) {
@@ -18,7 +14,7 @@ router.get('/new', isLoggedIn, (req, res) => {
   });
 });
 
-// create comment route. Add new comment to DB.
+// COMMENTS CREATE
 router.post('/', isLoggedIn, (req, res) => {
   // find company creat and save new comment to db
   Company.findById(req.params.id, (err, company) => {
@@ -41,10 +37,10 @@ router.post('/', isLoggedIn, (req, res) => {
 
 //middleware
 function isLoggedIn(req, res, next) {
-  if(req.isAuthenticated()) {
+  if (req.isAuthenticated()) {
     return next();
   }
   res.redirect("/login");
 }
 
-module.exports = router
+module.exports = router;
