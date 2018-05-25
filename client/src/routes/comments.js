@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router({mergeParams: true});
 var Company = require('../models/company');
 var Comment = require('../models/comment');
+var middleware = require("../../../server/middleware");
 
 // COMMENTS NEW route
 router.get('/new', isLoggedIn, (req, res) => {

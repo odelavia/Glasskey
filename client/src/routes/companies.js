@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Company    = require('../models/company');
+var middleware = require("../../../server/middleware");
 // ================//
 // COMPANY ROUTES  //
 // ================//
@@ -17,7 +18,7 @@ router.get('/', (req, res) => {
 });
 
 // CREATE route. Add new company to DB.
-router.post('/', isLoggedIn, (req, res) => {
+router.post('/', middleware.isLoggedIn, (req, res) => {
   var name = req.body.name;
   var image = req.body.image;
   var caption = req.body.caption; //delete this after, I only need name
@@ -39,7 +40,7 @@ router.post('/', isLoggedIn, (req, res) => {
 });
 
 // NEW route. Display form to create a new company
-router.get('/new', isLoggedIn, (req, res) => res.render('../client/src/views/companies/new'));
+router.get('/new', middleware.isLoggedIn, (req, res) => res.render('../client/src/views/companies/new'));
 
 // SHOW route. shows more info about one company
 router.get('/:id', (req, res) => {
@@ -53,14 +54,14 @@ router.get('/:id', (req, res) => {
 });
 
 //EDIT route. Edit company
-router.get("/:id/edit", checkCompanyOwnership, (req, res) => {
+router.get("/:id/edit", middleware.checkCompanyOwnership, (req, res) => {
   Company.findById(req.params.id, (err, foundCompany) => {
     res.render("../client/src/views/companies/edit", {company: foundCompany});
   });
 });
 
 //UPDATE route
-router.put("/:id", checkCompanyOwnership, (req, res) => {
+router.put("/:id", middleware.checkCompanyOwnership, (req, res) => {
   Company.findByIdAndUpdate(req.params.id, req.body.company, (err, updatedCompany) => {
     if (err) {
       res.redirect("/companies");
@@ -71,7 +72,7 @@ router.put("/:id", checkCompanyOwnership, (req, res) => {
 });
 
 //DESTROY route
-router.delete("/:id", checkCompanyOwnership, (req, res) => {
+router.delete("/:id", middleware.checkCompanyOwnership, (req, res) => {
   Company.findByIdAndRemove(req.params.id, (err) => {
     if (err) {
       res.redirect("/companies");
@@ -80,31 +81,5 @@ router.delete("/:id", checkCompanyOwnership, (req, res) => {
     }
   });
 });
-
-//middleware
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect("/login");
-}
-
-function checkCompanyOwnership(req, res, next) {
-  if (req.isAuthenticated()) {
-    Company.findById(req.params.id, (err, foundCompany) => {
-      if (err) {
-        res.redirect("back");
-      } else {
-        if (foundCompany.author.id.equals(req.user._id)) {
-          next();
-        } else {
-          res.redirect("back");
-        }
-      }
-    });
-  } else {
-    res.redirect("back");
-  }
-}
 
 module.exports = router;
