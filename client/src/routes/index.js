@@ -27,7 +27,7 @@ router.post("/register", (req, res) => {
 
 //show login form
 router.get("/login", (req, res) => {
-  res.render("../client/src/views/login");
+  res.render("../client/src/views/login", {message: req.flash("error")});
 });
 
 //handle login logic
