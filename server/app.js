@@ -10,14 +10,17 @@ const path       = require('path'),
       Comment    = require('../client/src/models/comment'),
       User    = require('../client/src/models/user');
 
+// requiring routes
+var commentRoutes = require("../client/src/routes/comments"),
+    companyRoutes = require("../client/src/routes/companies"),
+    indexRoutes   = require("../client/src/routes/index");
+
 mongoose.connect('mongodb://localhost/glass_key');
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '../client/dist'));
 seedDB();
 
-
-//seed data, adds a new company everytime we run this server
 // Company.create(
 //   {
 //     name: 'Glassdoor',
@@ -32,6 +35,7 @@ seedDB();
 //     }
 //   });
 
+// PASSPORT CONFIG
 app.use(require("express-session")({
   secret: "Once again, Oliver wins!",
   resave: false,
@@ -43,139 +47,19 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser);
 passport.deserializeUser(User.deserializeUser);
 
+// MIDDLEWARE SETUP
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 })
 
+//imports and prefixes routes
+app.use(indexRoutes);
+app.use("/companies", companyRoutes);
+app.use("/companies/:id/comments", commentRoutes);
+
+
 app.get('/', (req, res) => res.render('../client/src/views/landing'));
-
-
-// INDEX route. Show all companies
-app.get('/companies', (req, res) => {
-  Company.find({}, (err, allCompanies) => {
-    if(err){
-      console.log('err')
-    } else {
-      res.render('../client/src/views/companies/index', {companies:allCompanies});
-    }
-  });
-});
-
-// CREATE route. Add new company to DB.
-app.post('/companies', (req, res) => {
-  var name = req.body.name;
-  var image = req.body.image;
-  var caption = req.body.caption;
-  var desc = req.body.description;
-  var newCompany = {name: name, image: image, caption: caption, description: desc}
-  // create a new company and save to db
-  Company.create(newCompany, (err, newlyCreated) => {
-    if(err) {
-      console.log('err');
-    } else {
-      // redirect back to the companies page
-      res.redirect('/companies');
-    }
-  });
-});
-
-// NEW route. Displays form to make a new company
-app.get('/companies/new', (req, res) => res.render('../client/src/views/companies/new'));
-
-// SHOW route. shows more info about one company
-app.get('/companies/:id', (req, res) => {
-  Company.findById(req.params.id).populate("comments").exec((err, foundCompany) => {
-    if(err) {
-      console.log(err);
-    } else {
-      res.render('../client/src/views/companies/show', {company: foundCompany});
-    }
-  });
-});
-
-// ================//
-// COMMENTS ROUTES //
-// ================//
-
-app.get('/companies/:id/comments/new', isLoggedIn, (req, res) => {
-  Company.findById(req.params.id, (err, company) => {
-    if(err) {
-      console.log(err);
-    } else {
-      res.render('../client/src/views/comments/new', {company: company});
-    }
-  });
-});
-
-// create comment route. Add new comment to DB.
-app.post('/companies/:id/comments', isLoggedIn, (req, res) => {
-  // find company creat and save new comment to db
-  Company.findById(req.params.id, (err, company) => {
-    if(err) {
-      console.log('err');
-      res.redirect('/companies');
-    } else {
-      Comment.create(req.body.comment, (err, comment) => {
-        if(err) {
-          console.log('err');
-        } else {
-          company.comments.push(comment);
-          company.save();
-          res.redirect('/companies/' + company._id);
-        }
-      });
-    }
-  });
-});
-
-
-// AUTH ROUTES //
-
-//SHOW register form
-app.get("/register", (req, res) => {
-  res.render("../client/src/views/register");
-});
-
-//handle signup logic
-app.post("/register", (req, res) => {
-  var newUser = new User({username: req.body.username});
-  User.register(newUser, req.body.password, (err, user) => {
-    if(err) {
-      console.log(err);
-      return res.render("../client/src/views/register")
-    }
-    passport.authenticate("local")(req, res, () => {
-      res.redirect("/companies");
-    });
-  });
-});
-
-//show login form
-app.get("/login", (req, res) => {
-  res.render("../client/src/views/login");
-});
-
-//handle login logic
-app.post("/login", passport.authenticate("local",
-  {
-    successRedirect: "/companies",
-    failureRedirect: "/login"
-  }), (req, res) => {
-});
-
-//logout route
-app.get("/logout", (req, res) => {
-  req.logout();
-  res.redirect("/companies")
-});
-
-function isLoggedIn(req, res, next) {
-  if(req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect("/login");
-}
 
 app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 app.listen(8000, () => console.log('glasskey server is listening on port 8000!'));

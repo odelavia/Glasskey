@@ -1,0 +1,50 @@
+var express = require('express');
+var router = express.Router({mergeParams: true});
+var Company = require('../models/company');
+var Comment = require('../models/comment');
+
+// ================//
+// COMMENTS ROUTES //
+// ================//
+
+// comments NEW route
+router.get('/new', isLoggedIn, (req, res) => {
+  Company.findById(req.params.id, (err, company) => {
+    if(err) {
+      console.log(err);
+    } else {
+      res.render('../client/src/views/comments/new', {company: company});
+    }
+  });
+});
+
+// create comment route. Add new comment to DB.
+router.post('/', isLoggedIn, (req, res) => {
+  // find company creat and save new comment to db
+  Company.findById(req.params.id, (err, company) => {
+    if(err) {
+      console.log('err');
+      res.redirect('/companies');
+    } else {
+      Comment.create(req.body.comment, (err, comment) => {
+        if(err) {
+          console.log('err');
+        } else {
+          company.comments.push(comment);
+          company.save();
+          res.redirect('/companies/' + company._id);
+        }
+      });
+    }
+  });
+});
+
+//middleware
+function isLoggedIn(req, res, next) {
+  if(req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect("/login");
+}
+
+module.exports = router
