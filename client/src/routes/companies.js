@@ -60,7 +60,6 @@ router.get("/:id/edit", (req, res) => {
     } else {
       res.render("../client/src/views/companies/edit", {company: foundCompany});
     }
-
   })
 })
 
@@ -74,6 +73,18 @@ router.put("/:id", (req, res) => {
     }
   });
 });
+
+//DESTROY route
+router.delete("/:id", (req, res) => {
+  Company.findByIdAndRemove(req.params.id, (err) => {
+    if (err) {
+      res.redirect("/companies");
+    } else {
+      res.redirect('/companies/');
+    }
+  });
+})
+
 //middleware
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
