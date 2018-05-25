@@ -1,0 +1,17 @@
+<% include ../partials/header %>
+
+<div class="wrapper">
+    <header class="header">
+      <h1>Edit comment </h1>
+    </header>
+    <div class="form">
+        <form action="/companies/<%= company_id %>/comments/<%= comment._id %>?_method=PUT" method="POST">
+          <input class="name-input" type="text" name="comment[text]" value="<%= comment.text %>">
+          <!-- <input class="descrip-input" type="text" name="comment[author]" placeholder="author"> -->
+          <button>Submit!</button>
+          <a class="goback-link" href="/companies">Go Back</a>
+        </form>
+    </div>
+</div>
+
+<% include ../partials/footer %>

@@ -25,6 +25,9 @@
         </p>
         <span>10 days ago</span>
         <p> <%= comment.text%> </p>
+        <a href="/companies/<%= company._id%>/comments/<%= comment._id%>/edit">
+          Edit Comment
+        </a>
       </div>
     </div>
   <% }) %>
