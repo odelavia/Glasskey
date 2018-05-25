@@ -53,18 +53,14 @@ router.get('/:id', (req, res) => {
 });
 
 //EDIT route. Edit company
-router.get("/:id/edit", (req, res) => {
+router.get("/:id/edit", checkCompanyOwnership, (req, res) => {
   Company.findById(req.params.id, (err, foundCompany) => {
-    if (err) {
-      res.redirect("/companies");
-    } else {
-      res.render("../client/src/views/companies/edit", {company: foundCompany});
-    }
-  })
-})
+    res.render("../client/src/views/companies/edit", {company: foundCompany});
+  });
+});
 
 //UPDATE route
-router.put("/:id", (req, res) => {
+router.put("/:id", checkCompanyOwnership, (req, res) => {
   Company.findByIdAndUpdate(req.params.id, req.body.company, (err, updatedCompany) => {
     if (err) {
       res.redirect("/companies");
@@ -75,7 +71,7 @@ router.put("/:id", (req, res) => {
 });
 
 //DESTROY route
-router.delete("/:id", (req, res) => {
+router.delete("/:id", checkCompanyOwnership, (req, res) => {
   Company.findByIdAndRemove(req.params.id, (err) => {
     if (err) {
       res.redirect("/companies");
@@ -83,7 +79,7 @@ router.delete("/:id", (req, res) => {
       res.redirect('/companies/');
     }
   });
-})
+});
 
 //middleware
 function isLoggedIn(req, res, next) {
@@ -91,6 +87,24 @@ function isLoggedIn(req, res, next) {
     return next();
   }
   res.redirect("/login");
+}
+
+function checkCompanyOwnership(req, res, next) {
+  if (req.isAuthenticated()) {
+    Company.findById(req.params.id, (err, foundCompany) => {
+      if (err) {
+        res.redirect("back");
+      } else {
+        if (foundCompany.author.id.equals(req.user._id)) {
+          next();
+        } else {
+          res.redirect("back");
+        }
+      }
+    });
+  } else {
+    res.redirect("back");
+  }
 }
 
 module.exports = router;

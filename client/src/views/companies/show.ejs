@@ -5,10 +5,12 @@
   <img class="show-img" src="<%= company.image%>">
   <p><%= company.description %></p>
   <p>Submitted by <%= company.author.username %></p>
-  <a href="/companies/<%= company._id %>/edit">Edit</a>
-  <form action="/companies/<%= company._id %>?_method=DELETE" method="POST">
-    <button>Delete</button>
-  </form>
+  <% if (currentUser && company.author.id.equals(currentUser._id)) { %>
+    <a href="/companies/<%= company._id %>/edit">Edit</a>
+    <form action="/companies/<%= company._id %>?_method=DELETE" method="POST">
+      <button>Delete</button>
+    </form>
+  <% } %>
 </div>
 
 <div class="review-container">
