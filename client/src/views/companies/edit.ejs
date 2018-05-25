@@ -1,0 +1,18 @@
+<% include ../partials/header %>
+
+<div class="wrapper">
+    <header class="header">
+        <h1>EDIT <%= company.name%></h1>
+    </header>
+    <div class="form">
+        <form action="/companies/<%= company._id%>?_method=PUT" method="POST">
+          <input class="name-input" type="text" name="company[name]" value="<%= company.name%>">
+          <input class="image-input" type="text" name="company[image]" value="<%= company.image%>">
+          <input class="descrip-input" type="text" name="company[description]" value="<%= company.name%>">
+          <button>Submit!</button>
+          <a class="goback-link" href="/companies">Go Back</a>
+        </form>
+    </div>
+</div>
+
+<% include ../partials/footer %>

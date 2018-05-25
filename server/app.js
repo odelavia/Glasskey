@@ -5,6 +5,7 @@ const path       = require('path'),
       mongoose   = require('mongoose'),
       passport   = require('passport'),
       LocalStrategy   = require('passport-local'),
+      methodOverride  = require('method-override'),
       Company    = require('../client/src/models/company'),
       Comment    = require('../client/src/models/comment'),
       User    = require('../client/src/models/user'),
@@ -19,6 +20,7 @@ mongoose.connect('mongodb://localhost/glass_key');
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '../client/dist'));
+app.use(methodOverride("_method"));
 // SEED THE DATABASE
 // seedDB();
 

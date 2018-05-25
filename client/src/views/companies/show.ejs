@@ -4,6 +4,8 @@
   <h1><%= company.name%></h1>
   <img class="show-img" src="<%= company.image%>">
   <p><%= company.description %></p>
+  <p>Submitted by <%= company.author.username %></p>
+  <a href="/companies/<%= company._id %>/edit">Edit</a>
 </div>
 
 <div class="review-container">
